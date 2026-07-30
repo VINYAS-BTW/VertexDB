@@ -11,7 +11,7 @@
 
 ## Overview
 
-**MYDB** is a modern relational database management system (RDBMS) written completely from scratch in **C++17**.
+**  VertexDB** is a modern relational database management system (RDBMS) written completely from scratch in **C++17**.
 
 The goal of this project is not simply to build a database, but to understand how industrial database engines like **PostgreSQL**, **MySQL (InnoDB)**, **SQLite**, and **BusTub** work internally.
 
@@ -32,8 +32,6 @@ This project serves both as a learning journey and as a production-inspired data
 ---
 
 # Objectives
-
-The primary goals of this project are:
 
 - Learn database internals from first principles.
 - Implement core storage engine components.
@@ -121,21 +119,6 @@ ORDER BY
 LIMIT
 ```
 
-Future support
-
-```sql
-JOIN
-
-GROUP BY
-
-HAVING
-
-INDEX SCAN
-
-QUERY OPTIMIZER
-```
-
----
 
 # Current Project Structure
 
@@ -225,175 +208,6 @@ MYDB
 
 ---
 
-# Storage Layer
-
-The storage layer is the foundation of the database.
-
-Components include:
-
-### Page
-
-Represents one fixed-size database page.
-
-Stores
-
-- Page ID
-- Dirty Bit
-- Pin Count
-- LSN
-- Raw Page Data
-
----
-
-### Disk Manager
-
-Responsible for
-
-- Reading Pages
-- Writing Pages
-- Allocating Pages
-- Persistent Storage
-
----
-
-### Buffer Pool
-
-Acts as an in-memory cache for disk pages.
-
-Responsibilities
-
-- Fetch Page
-- New Page
-- Delete Page
-- Flush Page
-- Pin / Unpin Pages
-
----
-
-### LRU Replacer
-
-Implements page replacement.
-
-When memory becomes full,
-
-Least Recently Used pages are evicted first.
-
----
-
-# Index Layer
-
-The indexing subsystem uses a B+ Tree.
-
-Features
-
-- Point Search
-- Range Search
-- Insert
-- Delete
-- Split
-- Merge
-
-Future
-
-- Bulk Loading
-- Prefix Compression
-
----
-
-# Write Ahead Logging
-
-Implements WAL protocol.
-
-Every modification is logged before the actual page reaches disk.
-
-Supports
-
-- Recovery
-- Crash Safety
-- Durability
-
----
-
-# Transaction Manager
-
-Responsible for
-
-- Begin
-- Commit
-- Abort
-- Lock Acquisition
-- Lock Release
-
-Future
-
-- MVCC
-- Snapshot Isolation
-
----
-
-# SQL Parser
-
-Converts SQL text into executable syntax trees.
-
-Pipeline
-
-```
-SQL
-
-↓
-
-Lexer
-
-↓
-
-Parser
-
-↓
-
-AST
-
-↓
-
-Executor
-```
-
----
-
-# Query Executor
-
-Executes parsed queries.
-
-Example execution path
-
-```
-SELECT * FROM users;
-
-↓
-
-Lexer
-
-↓
-
-Parser
-
-↓
-
-Executor
-
-↓
-
-B+ Tree
-
-↓
-
-Buffer Pool
-
-↓
-
-Disk
-```
-
----
 
 # Build Instructions
 
@@ -443,78 +257,6 @@ or
 
 ---
 
-# Development Roadmap
-
-## Phase 1
-
-- [x] Project Setup
-- [x] Page Class
-- [x] Disk Manager
-- [ ] Buffer Pool Manager
-- [ ] LRU Replacer
-
----
-
-## Phase 2
-
-- [ ] B+ Tree
-- [ ] Leaf Nodes
-- [ ] Internal Nodes
-- [ ] Page Splitting
-- [ ] Merge
-
----
-
-## Phase 3
-
-- [ ] WAL
-- [ ] Log Manager
-- [ ] Recovery
-
----
-
-## Phase 4
-
-- [ ] Transactions
-- [ ] Lock Manager
-- [ ] Concurrency
-
----
-
-## Phase 5
-
-- [ ] SQL Lexer
-- [ ] SQL Parser
-- [ ] AST
-
----
-
-## Phase 6
-
-- [ ] Query Executor
-- [ ] Query Optimizer
-- [ ] Join Algorithms
-
----
-
-# Learning Outcomes
-
-This project explores many important computer science topics:
-
-- Database Systems
-- Operating Systems
-- File Systems
-- Storage Engines
-- Memory Management
-- Data Structures
-- B+ Trees
-- C++
-- Object-Oriented Design
-- Concurrency
-- Synchronization
-- System Design
-
----
 
 # References
 
@@ -556,16 +298,4 @@ This project is released under the MIT License.
 
 **Sai Vinyas BS**
 
-GitHub: https://github.com/VINYAS-BTW
 
-LinkedIn: https://linkedin.com/in/sai-vinyas-bs-864510296
-
-Portfolio: https://vinyas.vercel.app
-
----
-
-## Project Vision
-
-> "The best way to understand a database is to build one."
-
-MYDB is a long-term educational project focused on exploring the internals of modern relational database systems through hands-on implementation in C++. The goal is not only to create a working database engine, but also to gain a deep understanding of the algorithms and systems that power production-grade databases.
