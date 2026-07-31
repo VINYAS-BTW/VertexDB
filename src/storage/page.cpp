@@ -1,43 +1,68 @@
-#pragma once
-#include <cstdint>
-#include <cstring>
+#include "page.h"
 
-static constexpr int PAGE_SIZE = 4096;
+#include <algorithm>
 
-using page_id_t = int32_t;
-using lsn_t = int64_t;
+namespace mydb {
 
-static constexpr page_id_t INVALID_PAGE_ID = -1;
+Page::Page() {
+    Reset();
+}
 
-class Page {
-public:
-    Page() { reset(); }
+auto Page::GetData() -> char* {
+    return data_.data();
+}
 
-    inline uint8_t* data() { return data_; }
-    inline page_id_t page_id() const { return page_id_; }
-    inline bool is_dirty() const { return is_dirty_; }
-    inline int pin_count() const { return pin_count_; }
-    inline lsn_t lsn() const { return lsn_; }
+auto Page::GetData() const -> const char* {
+    return data_.data();
+}
 
-    void set_page_id(page_id_t id) { page_id_ = id; }
-    void set_dirty(bool dirty) { is_dirty_ = dirty; }
-    void set_lsn(lsn_t lsn) { lsn_ = lsn; }
+auto Page::GetPageId() const -> page_id_t {
+    return page_id_;
+}
 
-    void pin() { pin_count_++; }
-    void unpin() { if (pin_count_ > 0) pin_count_--; }
+auto Page::GetPinCount() const -> int {
+    return pin_count_;
+}
 
-    void reset() {
-        memset(data_, 0, PAGE_SIZE);
-        page_id_ = INVALID_PAGE_ID;
-        is_dirty_ = false;
-        pin_count_ = 0;
-        lsn_ = 0;
+auto Page::IsDirty() const -> bool {
+    return is_dirty_;
+}
+
+auto Page::GetLSN() const -> lsn_t {
+    return lsn_;
+}
+
+void Page::SetPageId(page_id_t page_id) {
+    page_id_ = page_id;
+}
+
+void Page::SetDirty(bool dirty) {
+    is_dirty_ = dirty;
+}
+
+void Page::SetLSN(lsn_t lsn) {
+    lsn_ = lsn;
+}
+
+void Page::Pin() {
+    ++pin_count_;
+}
+
+void Page::Unpin() {
+    if (pin_count_ > 0) {
+        --pin_count_;
     }
+}
 
-private:
-    uint8_t data_[PAGE_SIZE];
-    page_id_t page_id_{INVALID_PAGE_ID};
-    bool is_dirty_{false};
-    int pin_count_{0};
-    lsn_t lsn_{0};
-};
+void Page::Reset() {
+
+    // clear everything before reusing the frame
+    std::fill(data_.begin(), data_.end(), 0);
+
+    page_id_ = INVALID_PAGE_ID;
+    pin_count_ = 0;
+    is_dirty_ = false;
+    lsn_ = 0;
+}
+
+} // namespace mydb
